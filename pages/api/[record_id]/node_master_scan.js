@@ -3,15 +3,14 @@
 
 export async function setNodeMasterScan(record_id) {
   const endpoint = "https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests"
-  const recordsToUpdate = [{
-    id: record_id,
-    fields: {
-      "Node Master Scanned At": Date.now()
-    }
-  }]
   const rawRecords = await fetch(endpoint, {
     method: "PATCH",
-    body: recordsToUpdate
+    body: {
+      id: record_id,
+      fields: {
+        "Node Master Scanned At": Date.now()
+      }
+    }
   })
   const parsedRecords = await rawRecords.json()
   const record = parsedRecords[0]
