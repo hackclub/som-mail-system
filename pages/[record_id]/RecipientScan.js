@@ -81,7 +81,7 @@ function RecipientScanPage(props) {
       <p>
         As a small token of appreciation, we've sent you a couple of stickers!
       </p>
-      {props.record.fields['Recipient Uploads'].length < 0 ?
+      {typeof props.record.fields['Recipient Uploads'] == 'undefined' ?
       <>
       <p>
         Could you take a photo of your package so we know you received it? Make
@@ -117,6 +117,5 @@ export async function getServerSideProps(context) {
         filterByFormula: `{Record ID} = "${context.params.record_id}"`
       })
   ).then(r => r.json())
-  console.log(record[0].fields['Recipient Uploads'])
   return { props: { record: record[0] } }
 }
