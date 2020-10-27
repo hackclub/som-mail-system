@@ -4,7 +4,7 @@
  */
 
 import { Container, Heading, Image, Button, Link } from 'theme-ui'
-import { setNodeMasterScan } from '../api/[record_id]/node_master_scan'
+import { setNodeMasterScan } from '../api/[record_id]/node-master-scan'
 
 function RecipientScanPage(props) {
   return (

@@ -8,8 +8,8 @@
 // the "record_id" and "file"
 
 import { Container, Heading, Image, Button, Link } from 'theme-ui'
-import { setRecipientScan } from '../api/[record_id]/recipient_scan'
-import { setRecipientUpload } from '../api/[record_id]/recipient_upload'
+import { setRecipientScan } from '../api/[record_id]/recipient-scan'
+import { setRecipientUpload } from '../api/[record_id]/recipient-upload'
 
 async function uploadPhotos(e, record_id) {
   const fileData = e.target.files[0]
