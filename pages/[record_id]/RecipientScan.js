@@ -84,8 +84,7 @@ function RecipientScanPage(props) {
       {typeof props.record.fields['Recipient Uploads'] == 'undefined' ?
       <>
       <p>
-        Could you take a photo of your package so we know you received it? Make
-        sure to cover all private details as these are shared publicly.
+        If you want, take a photo of your package to share! Make sure to cover all private details first!
       </p>
       <Button id="input-file-label-button">
         <label htmlFor="file-upload" className="custom-file-upload" id="input-file-label-text">
