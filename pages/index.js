@@ -1,6 +1,11 @@
 /* This page really doesn't need to exist, go ahead and skip it */
-function HomePage() {
-  return <div>Welcome!</div>
-}
 
-export default HomePage
+import { Container } from 'theme-ui'
+
+export default function HomePage() {
+  return (
+      <Container>
+        Welcome!
+      </Container>
+  )
+}
