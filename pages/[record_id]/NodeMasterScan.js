@@ -3,18 +3,8 @@
  * "api/node_master_scan", then show a "success" message
  */
 
-<<<<<<< Updated upstream
-export default function NodeMasterScanPage({record}) {
-  if (record) {
-    return <Layout>Success!</Layout>
-  } else {
-    return <Layout>error!</Layout>
-  }
-}
-=======
 import { Container, Heading, Image, Button, Link } from 'theme-ui'
 import { setNodeMasterScan } from '../api/[record_id]/node_master_scan'
->>>>>>> Stashed changes
 
 function RecipientScanPage(props) {
   return (
@@ -51,15 +41,6 @@ function RecipientScanPage(props) {
   )
 }
 
-<<<<<<< Updated upstream
-export async function getStaticProps({params}) {
-  return {
-    props: {
-      record: await setNodeMasterScan(params.record_id)
-    }
-  }
-}
-=======
 export default RecipientScanPage
 
 export async function getServerSideProps(context) {
@@ -73,4 +54,3 @@ export async function getServerSideProps(context) {
   ).then(r => r.json())
   return { props: { record: record[0] } }
 }
->>>>>>> Stashed changes
