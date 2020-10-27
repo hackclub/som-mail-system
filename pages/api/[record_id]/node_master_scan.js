@@ -2,18 +2,20 @@
 // "Node Master Scanned At" field with the current time
 
 export async function setNodeMasterScan(record_id) {
-  const endpoint = "https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests"
+  const endpoint = `https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
   const rawRecords = await fetch(endpoint, {
     method: "PATCH",
-    body: {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
       id: record_id,
       fields: {
         "Node Master Scanned At": Date.now()
       }
-    }
+    })
   })
-  const parsedRecords = await rawRecords.json()
-  const record = parsedRecords[0]
+  const record = await rawRecords.json()
   return record
 }
 

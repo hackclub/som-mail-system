@@ -5,22 +5,20 @@ import { setNodeMasterScan } from '../api/[record_id]/node_master_scan'
  * "api/node_master_scan", then show a "success" message
  */
 
-export default function NodeMasterScanPage({record}) {
-  if (record) {
-    return <Layout>Success!</Layout>
+function NodeMasterScanPage({record}) {
+  if (record && record.fields) {
+    return <Layout>You've just scanned the package for {record.fields['Name']}!</Layout>
   } else {
-    return <Layout>error!</Layout>
+    return <Layout>loading...</Layout>
   }
 }
+export default NodeMasterScanPage
 
 export async function getStaticPaths() {
   return { paths: [], fallback: true }
 }
 
 export async function getStaticProps({params}) {
-  return {
-    props: {
-      record: await setNodeMasterScan(params.record_id)
-    }
-  }
+  const record = await setNodeMasterScan(params.record_id)
+  return { props: { record } }
 }
