@@ -5,7 +5,7 @@ import { Container } from 'theme-ui'
 export default function HomePage() {
   return (
       <Container>
-        Coming soon
+        The stickers are coming soon :)
       </Container>
   )
 }
