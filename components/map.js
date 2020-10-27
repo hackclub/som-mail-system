@@ -8,6 +8,9 @@ import {
   Sphere,
   Graticule
 } from "react-simple-maps";
+var Rainbow = require('rainbowvis.js');
+var myRainbow = new Rainbow();
+myRainbow.setSpectrum('#ff8c37', '#ec3750');
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -39,13 +42,13 @@ const MapChart = (props) => {
           {({ geographies }) =>
             geographies.map((geo) => {
               const d = data.find((s) => s.ISO3 === geo.properties.ISO_A3);
-              if(d){
+              
+              if(d){console.log((d['Length']*10000))
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  opacity={d['Length']*18}
-                  fill={"#ec3750"}
+                  fill={'#'+myRainbow.colourAt(d['Length']*1500)}
                 />
               );}
             })
