@@ -16,12 +16,12 @@ const colorScale = scaleLinear()
   .domain([0.29, 0.68])
   .range(["#ffedea", "#ff5233"]);
 
-const MapChart = (myyymapData) => {
+const MapChart = (props) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-      setData(myyymapData);
-      console.log(myyymapData)
+      setData(props.mapData);
+      console.log(props.mapData)
   }, []);
 
   return (
@@ -39,13 +39,15 @@ const MapChart = (myyymapData) => {
           {({ geographies }) =>
             geographies.map((geo) => {
               const d = data.find((s) => s.ISO3 === geo.properties.ISO_A3);
+              if(d){
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill={d ? colorScale(d["Length"]) : "#F5F4F6"}
+                  opacity={d['Length']*18}
+                  fill={"#ec3750"}
                 />
-              );
+              );}
             })
           }
         </Geographies>

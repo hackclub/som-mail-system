@@ -47,6 +47,5 @@ export async function getStaticProps(){
       let x;
       finalData.push({'ISO3': data[key][0]['ISO3'], 'Country': data[key][0]['Country'], 'Length': data[key].length/ massiveLength})} 
   }
-  console.log(finalData[99])
   return {props: {data: finalData}}
 }
