@@ -16,27 +16,77 @@ async function generateLabel(record) {
     format: "letter",
     unit: "in"
   })
+
+  const imgs = {}
+  await Promise.all([
+    imageFromUrl('https://cloud-ncs8fqr6s.vercel.app/0pixil-frame-0.png').then(img =>
+      imgs.stampPlaceholder = img),
+    imageFromUrl(record.fields['Recipient QR Code']).then(img =>
+      imgs.recipientQr = img),
+    imageFromUrl(record.fields['Node Master QR Code']).then(img =>
+      imgs.nodeMasterQr = img),
+  ])
+
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
   doc.setLineWidth(0.01)
-  doc.rect(1.25,1.375,4,6)
-  doc.rect(11-4-1.25,1.375,4,6)
 
-  doc.setFontSize(40)
-  doc.text("Hello world!", 1.25, 1+1.375)
-  doc.text(record.id, 10, 20)
+  // outside label
+  // stamp outline
+  doc.setLineWidth(0.01)
+  doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  // outside qr code
+  doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5)
+  doc.setFontSize(8)
+  doc.text([
+    record.fields['Name'],
+    'Summer of Making Stickers',
+    record.id
+  ].join("\n"), 11-1.375-4+0.25 + 0.5 + 0.125, 8.5-1.375-0.25)
+  // return address
+  let returnAddress = [
+    'Hack Club',
+    '15 Falls Road',
+    'Shelburne, VT 05482'
+  ]
+  if (record.fields['Country Dropdown'] != 'United States of America (US)') {
+    returnAddress.push('United States of America')
+  }
+  doc.setFontSize(8)
+  doc.text(returnAddress.join("\n"), 11-1.375-4+0.25 + 0.125, 1.375+0.25)
+  // recipient address
+  let recipientAddress = [
+    record.fields['Name'],
+    record.fields['Combined Address For Geocoding']
+  ]
+  doc.setFontSize(12)
+  doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
 
-  // get QR code and add to image
-  const recipientQrImage = await imageFromUrl(record.fields['Recipient QR Code'])
-  const qrCodes = {}
-  await Promise.all([
-    imageFromUrl(record.fields['Recipient QR Code']).then(img =>
-      qrCodes.recipient = img),
-    imageFromUrl(record.fields['Node Master QR Code']).then(img =>
-      qrCodes.nodeMaster = img),
-  ])
-  doc.addImage(qrCodes.recipient, null, 1.25, 1.375, 1, 1)
-  doc.addImage(qrCodes.nodeMaster, null, 11-1, 8.5-1.375, 1, 1)
+
+
+  // recipient sleeve
+  doc.addImage(imgs.recipientQr, null, 1.25+0.125, 1.375+0.125, 0.5, 0.5)
+  doc.setFontSize(8)
+  doc.text([
+    record.fields['Name'],
+    'Summer of Making Stickers',
+    record.id,
+    record.fields['Comment']
+  ].join("\n"), 1.25+0.125+0.5+0.1, 1.375+0.25)
+  doc.setFontSize(20)
+  doc.text("<-- scan this with your phone camera", 1.25+0.125, 0.75+1.375, null, -90)
+
+  // label sheet border (not on one of the peel-able labels)
+  doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1)
+  doc.setFontSize(8)
+  doc.text([
+    record.fields['Name'],
+    'Summer of Making Stickers',
+    record.id,
+    record.fields['Country Dropdown'],
+    record.fields['Comment']
+  ].join("\n"), 11-0.25, 1+0.25, null, -90)
 
   return doc.output()
 }
