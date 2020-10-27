@@ -7,7 +7,7 @@ import { setNodeMasterScan } from '../api/[record_id]/node_master_scan'
 
 function NodeMasterScanPage({record}) {
   if (record && record.fields) {
-    return <Layout>You've just scanned the package for {record.fields['Name']}!</Layout>
+    return <Layout>You've just scanned the package for {record.fields['Name']}! Go ahead and ship it out once you're ready.</Layout>
   } else {
     return <Layout>loading...</Layout>
   }
