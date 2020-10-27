@@ -4,14 +4,14 @@
 export async function setRecipientScan(record_id) {
   const endpoint = `https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
   const rawRecords = await fetch(endpoint, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       id: record_id,
       fields: {
-        "Recipient Scanned At": Date.now()
+        'Recipient Scanned At': Date.now()
       }
     })
   })
@@ -22,10 +22,8 @@ export async function setRecipientScan(record_id) {
 export default async (req, res) => {
   const { record_id } = req.query
   if (!record_id || record_id === undefined) {
-    return res.status(404).json({ status: 404, error: "missing record ID" })
+    return res.status(404).json({ status: 404, error: 'missing record ID' })
   }
-
   const record = await setRecipientScan(record_id)
-
   res.json(record)
 }

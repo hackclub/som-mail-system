@@ -7,8 +7,99 @@
 // It should show a file_picker that will post to "api/recipient_upload" with
 // the "record_id" and "file"
 
-function RecipientScanPage() {
-  return <div>Loading...</div>
+import { Container, Heading, Image, Button, Link } from 'theme-ui'
+import { setRecipientScan } from '../api/[record_id]/recipient_scan'
+import { setRecipientUpload } from '../api/[record_id]/recipient_upload'
+
+async function uploadPhotos(e, record_id) {
+  const fileData = e.target.files[0]
+  console.log('File Received:', fileData)
+  const formData = new FormData()
+  formData.append('input_file', fileData, 'image' + '.png')
+  formData.append('max_views', 0)
+  formData.append('max_minutes', 1)
+  formData.append('upl', 'Upload')
+  const fileURL =
+    'https://cors-anywhere.herokuapp.com/https://tmpfiles.org/?upload'
+  const imageRequest = await fetch(fileURL, {
+    method: 'POST',
+    mode: 'cors',
+    body: formData
+  })
+
+  if (imageRequest.headers) {
+    const blobURL = imageRequest.headers
+      .get('X-Final-Url')
+      .replace('download', 'dl')
+    console.log(await fetch(`/api/${record_id}/recipient_upload?record_id=${record_id}&image_url=${blobURL} `))
+  } else {
+    console.log('error')
+  }
+}
+
+function RecipientScanPage(props) {
+  return (
+    <Container
+      sx={{
+        paddingTop: '60px',
+        paddingBottom: '60px',
+        textAlign: 'center',
+        width: '90%',
+        maxWidth: '500px!important'
+      }}
+    >
+      <Link href="https://hackclub.com">
+        <Image
+          src="https://cloud-firx16aou.vercel.app/0som.svg"
+          sx={{ marginBottom: '20px' }}
+        />
+      </Link>
+      <Heading
+        as="h1"
+        sx={{
+          fontSize: '',
+          maxWidth: '400px',
+          margin: 'auto',
+          marginBottom: '20px'
+        }}
+      >
+        Thank you for making with us this summer!{' '}
+      </Heading>
+      <p>
+        As a small token of appreciation, we've sent you a couple of stickers!
+      </p>
+      <p>
+        Could you take a photo of your package so we know you received it? Make
+        sure to cover all private details as these are shared publicly.
+      </p>
+      <Button>
+        <label htmlFor="file-upload" className="custom-file-upload">
+          Share a picture
+        </label>
+      </Button>
+      <input
+        id="file-upload"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        name="file"
+        style={{ display: 'none' }}
+        onChange={e => uploadPhotos(e, props.record.id)}
+      />
+    </Container>
+  )
 }
 
 export default RecipientScanPage
+
+export async function getServerSideProps(context) {
+  const scanned = await setRecipientScan(context.params.record_id)
+  console.log(scanned)
+  const record = await fetch(
+    'https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?select=' +
+      JSON.stringify({
+        filterByFormula: `{Record ID} = "${context.params.record_id}"`
+      })
+  ).then(r => r.json())
+  return { props: { record: record[0] } }
+}
