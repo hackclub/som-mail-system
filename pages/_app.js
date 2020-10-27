@@ -16,7 +16,7 @@ export default class App extends NextApp {
           name="Hack Club" // site name
           title="Summer of Making Stickers" // page title
           description="Sticker system for Summer of Making!" // page description
-          image="https://hackathons.hackclub.com/card.png" // large summary card image URL
+          image="https://assets.hackclub.com/log/2020-06-18_summer.jpg" // large summary card image URL
           color="#ec3750" // theme color
           manifest="/site.webmanifest" // link to site manifest
         />
