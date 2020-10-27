@@ -1,5 +1,3 @@
-/* This page really doesn't need to exist, go ahead and skip it */
-
 import { Container, Heading, Grid, Card } from 'theme-ui'
 import MapChart from '../components/map'
 import { groupBy } from 'lodash'
@@ -30,7 +28,7 @@ export default function HomePage(props) {
   )
 }
 
-export async function getServerSideProps(){
+export async function getStaticProps(){
   let data = await fetch(
     `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`)
     .then(r => r.json())
