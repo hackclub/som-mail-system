@@ -13,6 +13,8 @@ import { setRecipientUpload } from '../api/[record_id]/recipient_upload'
 
 async function uploadPhotos(e, record_id) {
   const fileData = e.target.files[0]
+  document.getElementById("input-file-label-text").innerHTML = "Loading...";
+  document.getElementById("input-file-label-button").style.backgroundColor = "#ff8c37";
   console.log('File Received:', fileData)
   const formData = new FormData()
   formData.append('input_file', fileData, 'image' + '.png')
@@ -31,9 +33,20 @@ async function uploadPhotos(e, record_id) {
     const blobURL = imageRequest.headers
       .get('X-Final-Url')
       .replace('download', 'dl')
-    console.log(await fetch(`/api/${record_id}/recipient_upload?record_id=${record_id}&image_url=${blobURL} `))
+    const response = await fetch(`/api/${record_id}/recipient_upload?record_id=${record_id}&image_url=${blobURL} `)
+    if(response.ok){
+      document.getElementById("input-file-label-text").innerHTML = "Success!";
+      document.getElementById("input-file-label-button").style.backgroundColor = "#33d6a6";
+      document.getElementById("input-file-label-text").htmlFor = "";
+    }
+    else{
+      document.getElementById("input-file-label-text").innerHTML = "Oh no! Try again?";
+      document.getElementById("input-file-label-button").style.backgroundColor = "#8492a6";
+    }
   } else {
     console.log('error')
+    document.getElementById("input-file-label-text").innerHTML = "Oh no! Try again?";
+    document.getElementById("input-file-label-button").style.backgroundColor = "#8492a6";
   }
 }
 
@@ -68,12 +81,14 @@ function RecipientScanPage(props) {
       <p>
         As a small token of appreciation, we've sent you a couple of stickers!
       </p>
+      {props.record.fields['Recipient Uploads'].length < 0 ?
+      <>
       <p>
         Could you take a photo of your package so we know you received it? Make
         sure to cover all private details as these are shared publicly.
       </p>
-      <Button>
-        <label htmlFor="file-upload" className="custom-file-upload">
+      <Button id="input-file-label-button">
+        <label htmlFor="file-upload" className="custom-file-upload" id="input-file-label-text">
           Share a picture
         </label>
       </Button>
@@ -86,6 +101,7 @@ function RecipientScanPage(props) {
         style={{ display: 'none' }}
         onChange={e => uploadPhotos(e, props.record.id)}
       />
+      </> : <p></p>}
     </Container>
   )
 }
@@ -96,10 +112,11 @@ export async function getServerSideProps(context) {
   const scanned = await setRecipientScan(context.params.record_id)
   console.log(scanned)
   const record = await fetch(
-    'https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?select=' +
+    `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}&select=` +
       JSON.stringify({
         filterByFormula: `{Record ID} = "${context.params.record_id}"`
       })
   ).then(r => r.json())
+  console.log(record[0].fields['Recipient Uploads'])
   return { props: { record: record[0] } }
 }

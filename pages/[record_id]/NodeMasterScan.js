@@ -47,7 +47,7 @@ export async function getServerSideProps(context) {
   const scanned = await setNodeMasterScan(context.params.record_id)
   console.log(scanned)
   const record = await fetch(
-    'https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?select=' +
+    `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}&select=` +
       JSON.stringify({
         filterByFormula: `{Record ID} = "${context.params.record_id}"`
       })

@@ -5,7 +5,7 @@ import { Container } from 'theme-ui'
 export default function HomePage() {
   return (
       <Container>
-        Welcome!
+        Coming soon
       </Container>
   )
 }
