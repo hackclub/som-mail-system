@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf"
 import { getRecordById } from ".."
+import { getRandomDinoUrl } from "../../random-dino"
 
 async function imageFromUrl(url) {
 
@@ -8,8 +9,8 @@ async function imageFromUrl(url) {
   const buff = new Buffer(await blob.arrayBuffer())
 
   return 'data:' + res.headers.get('content-type') + ';base64,' + buff.toString('base64')
-
 }
+
 async function generateLabel(record) {
   const doc = new jsPDF({
     orientation: "landscape",
@@ -19,6 +20,8 @@ async function generateLabel(record) {
 
   const imgs = {}
   await Promise.all([
+    imageFromUrl(getRandomDinoUrl()).then(img =>
+      imgs.dino = img),
     imageFromUrl('https://cloud-ncs8fqr6s.vercel.app/0pixil-frame-0.png').then(img =>
       imgs.stampPlaceholder = img),
     imageFromUrl(record.fields['Recipient QR Code']).then(img =>
@@ -62,6 +65,8 @@ async function generateLabel(record) {
   ]
   doc.setFontSize(12)
   doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
+  // dino image on outside
+  doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5)
 
 
 
