@@ -16,7 +16,7 @@ export default function HomePage(props) {
         width: '90%'
       }}
     >
-      <Heading sx={{ textAlign: 'center' }}>Mission Impossible:</Heading>
+      <Heading sx={{ textAlign: 'center', fontWeight: '400' }}>Mission Impossible:</Heading>
       <Heading
         as="h1"
         sx={{
