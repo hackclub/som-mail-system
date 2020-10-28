@@ -35,8 +35,8 @@ const MapChart = props => {
       }}
       style={{ width: '100%' }}
     >
-      <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
-      <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+      <Sphere stroke="#474759" strokeWidth={0.5} />
+      <Graticule stroke="#474759" strokeWidth={0.5} />
       {data.length > 0 && (
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
@@ -56,7 +56,7 @@ const MapChart = props => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={'lightgrey'}
+                    fill={'#474759'}
                   />
                 )
               }
