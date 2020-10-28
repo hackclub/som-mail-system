@@ -70,5 +70,5 @@ export async function getStaticProps() {
       })
     }
   }
-  return { props: { data: finalData, totalAmount: data.length} }
+  return { props: { data: finalData, totalAmount: massiveLength} }
 }
