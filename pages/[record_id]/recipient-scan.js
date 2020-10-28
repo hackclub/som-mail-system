@@ -7,17 +7,14 @@
 // It should show a file_picker that will post to "api/recipient_upload" with
 // the "record_id" and "file"
 
+import { useState } from 'react';
 import { Container, Heading, Image, Button, Link } from 'theme-ui'
+import { getRecordById } from '../api/[record_id]';
 import { setRecipientScan } from '../api/[record_id]/recipient-scan'
-import { setRecipientUpload } from '../api/[record_id]/recipient-upload'
 
-async function uploadPhotos(e, record_id) {
-  const fileData = e.target.files[0]
-  document.getElementById("input-file-label-text").innerHTML = "Loading...";
-  document.getElementById("input-file-label-button").style.backgroundColor = "#ff8c37";
-  console.log('File Received:', fileData)
+async function fileToTmpReq(file) {
   const formData = new FormData()
-  formData.append('input_file', fileData, 'image' + '.png')
+  formData.append('input_file', file, 'image' + '.png')
   formData.append('max_views', 0)
   formData.append('max_minutes', 1)
   formData.append('upl', 'Upload')
@@ -29,28 +26,44 @@ async function uploadPhotos(e, record_id) {
     body: formData
   })
 
-  if (imageRequest.headers) {
-    const blobURL = imageRequest.headers
-      .get('X-Final-Url')
-      .replace('download', 'dl')
-    const response = await fetch(`/api/${record_id}/recipient-upload?record_id=${record_id}&image_url=${blobURL} `)
-    if(response.ok){
-      document.getElementById("input-file-label-text").innerHTML = "Success!";
-      document.getElementById("input-file-label-button").style.backgroundColor = "#33d6a6";
-      document.getElementById("input-file-label-text").htmlFor = "";
-    }
-    else{
-      document.getElementById("input-file-label-text").innerHTML = "Oh no! Try again?";
-      document.getElementById("input-file-label-button").style.backgroundColor = "#8492a6";
-    }
-  } else {
-    console.log('error')
-    document.getElementById("input-file-label-text").innerHTML = "Oh no! Try again?";
-    document.getElementById("input-file-label-button").style.backgroundColor = "#8492a6";
-  }
+  const blobURL = imageRequest?.headers?.get('X-Final-Url')?.replace('download', 'dl')
+  return blobURL
 }
 
 function RecipientScanPage(props) {
+  const [status, setStatus] = useState("default")
+
+  const buttonColor = {
+    error: '#8492a6',
+    loading: '#ff8c37',
+    success: '#33d6a6',
+  }[status]
+  const buttonText = {
+    default: "Share a picture!",
+    error: "Oh no! Try again?",
+    loading: "Loading...",
+    success: "Shared!",
+  }[status]
+
+  const uploadPhotos = async (e, record_id) => {
+    setStatus("loading")
+    const fileData = e.target.files[0]
+    const tempFileUrl = await fileToTmpReq(fileData)
+    if (!tempFileUrl) {
+      setStatus("error")
+      return
+    }
+
+    const updatedRecord = await fetch(`/api/${record_id}/recipient-upload?image_url=${tempFileUrl}`)
+
+    if (!updatedRecord) {
+      setStatus("error")
+      return
+    }
+
+    setStatus("success")
+  }
+
   return (
     <Container
       sx={{
@@ -86,9 +99,11 @@ function RecipientScanPage(props) {
       <p>
         If you want, take a photo of your package to share! Make sure to cover all private details first!
       </p>
-      <Button id="input-file-label-button">
-        <label htmlFor="file-upload" className="custom-file-upload" id="input-file-label-text">
-          Share a picture
+      <Button id="input-file-label-button" sx={{
+        backgroundColor: buttonColor
+      }}>
+        <label htmlFor={status == 'success' ? null : "file-upload"} className="custom-file-upload" id="input-file-label-text">
+          {buttonText}
         </label>
       </Button>
       <input
@@ -107,14 +122,12 @@ function RecipientScanPage(props) {
 
 export default RecipientScanPage
 
-export async function getServerSideProps(context) {
-  const scanned = await setRecipientScan(context.params.record_id)
-  console.log(scanned)
-  const record = await fetch(
-    `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}&select=` +
-      JSON.stringify({
-        filterByFormula: `{Record ID} = "${context.params.record_id}"`
-      })
-  ).then(r => r.json())
-  return { props: { record: record[0] } }
+export async function getServerSideProps(props) {
+  const { record_id } = props.params
+  const results = {}
+  await Promise.all([
+    setRecipientScan(record_id),
+    getRecordById(record_id, true).then(rec => results.record = rec)
+  ])
+  return { props: { record: results.record } }
 }
