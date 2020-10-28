@@ -31,7 +31,7 @@ const MapChart = props => {
     <ComposableMap
       projectionConfig={{
         rotate: [-10, 0, 0],
-        scale: 160
+        scale: 145
       }}
       style={{ width: '100%' }}
     >
