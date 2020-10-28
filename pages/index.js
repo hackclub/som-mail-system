@@ -42,7 +42,7 @@ export default function HomePage(props) {
                 </Heading>
               </div>
               <div style={{ paddingTop: '5px' }}>
-                envelops have been shipped!
+                envelopes have been shipped!
               </div>
             </Grid>
           </Card>
@@ -54,7 +54,7 @@ export default function HomePage(props) {
                 </Heading>
               </div>
               <div style={{ paddingTop: '5px' }}>
-                envelops are awaiting shipment.
+                envelopes are awaiting shipment.
               </div>
             </Grid>
           </Card>
@@ -68,7 +68,7 @@ export default function HomePage(props) {
       </p>
       <style jsx>
         {`
-          a{
+          a {
             color: #f1c40f;
             text-decoration: none;
           }
