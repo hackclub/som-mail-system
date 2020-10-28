@@ -1,9 +1,12 @@
-export async function getRecordById(record_id) {
+export async function getRecordById(record_id, withAuth=false) {
   const options = {
     maxRecords: 1,
     filterByFormula: `RECORD_ID()='${record_id}'`
   }
-  const endpoint = `https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests?select=${JSON.stringify(options)}`
+  let endpoint = `https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests?select=${JSON.stringify(options)}`
+  if (withAuth) {
+    endpoint += `&authKey=${process.env.AIRBRIDGE_TOKEN}`
+  }
   const rawRecords = await fetch(endpoint)
   const parsedRecords = await rawRecords.json()
   const record = parsedRecords[0]
