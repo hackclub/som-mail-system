@@ -33,7 +33,7 @@ async function uploadPhotos(e, record_id) {
     const blobURL = imageRequest.headers
       .get('X-Final-Url')
       .replace('download', 'dl')
-    const response = await fetch(`/api/${record_id}/recipient_upload?record_id=${record_id}&image_url=${blobURL} `)
+    const response = await fetch(`/api/${record_id}/recipient-upload?record_id=${record_id}&image_url=${blobURL} `)
     if(response.ok){
       document.getElementById("input-file-label-text").innerHTML = "Success!";
       document.getElementById("input-file-label-button").style.backgroundColor = "#33d6a6";
