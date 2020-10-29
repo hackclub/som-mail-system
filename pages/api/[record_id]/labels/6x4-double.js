@@ -1,6 +1,5 @@
 import { jsPDF } from "jspdf"
 import { getRecordById } from ".."
-import { getRandomDinoUrl } from "../../random-dino"
 
 async function imageFromUrl(url) {
 
@@ -20,7 +19,7 @@ async function generateLabel(record) {
 
   const imgs = {}
   await Promise.all([
-    imageFromUrl(getRandomDinoUrl()).then(img =>
+    imageFromUrl(record.fields['URL (from Artwork)']).then(img =>
       imgs.dino = img),
     imageFromUrl('https://cloud-ncs8fqr6s.vercel.app/0pixil-frame-0.png').then(img =>
       imgs.stampPlaceholder = img),

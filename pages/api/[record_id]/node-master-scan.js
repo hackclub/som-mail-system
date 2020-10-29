@@ -5,9 +5,7 @@ export async function setNodeMasterScan(record_id) {
   const endpoint = `https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
   const rawRecords = await fetch(endpoint, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       id: record_id,
       fields: {
