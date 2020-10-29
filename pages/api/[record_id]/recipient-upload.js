@@ -4,6 +4,24 @@
 
 // Then it should post the "file" in #packages (see #packages for examples)
 
+async function postInSlack({channel, messageText, attachImageByUrl, thread}) {
+  const endpoint = 'https://hooks.zapier.com/hooks/catch/507705/oq8mtti/'
+  const body = {
+      zapierAuthToken: process.env.ZAPIER_TOKEN || 'auth-token',
+      channel,
+      messageText,
+      attachImageByUrl,
+      thread,
+    }
+  return await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+}
+
 export async function setRecipientUpload(record_id, image_url) {
   const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
   const rawRecords = await fetch(endpoint, {
@@ -25,16 +43,45 @@ export async function setRecipientUpload(record_id, image_url) {
   return await rawRecords.json()
 }
 
-export async function postInPackages(record_id) {
-  const endpoint = 'https://hooks.zapier.com/hooks/catch/507705/oq8mtti/'
-  return await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      recordID: record_id
+async function getArtwork(recordId) {
+  const options = {
+    maxRecords: 1,
+    filterByFormula: `RECORD_ID()='${recordId}'`
+  }
+  const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Artwork?select=${JSON.stringify(options)}&authKey=${process.env.AIRBRIDGE_TOKEN}`
+  const rawRecords = await fetch(endpoint)
+  const parsedRecords = await rawRecords.json()
+  const record = parsedRecords[0]
+  return record
+}
+
+async function getArtworkUsage(artworkRecordId) {
+  const options = {
+    filterByFormula: `AND({Recipient Uploads},{Record ID (from Artwork)}='${artworkRecordId}')`
+  }
+  const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?select=${JSON.stringify(options)}&authKey=${process.env.AIRBRIDGE_TOKEN}`
+  const rawRecords = await fetch(endpoint)
+  const parsedRecords = await rawRecords.json()
+  return parsedRecords.length
+}
+
+async function notifyArtist(packageRecord, artworkRecord) {
+  const artworkUsage = await getArtworkUsage(artworkRecord.id)
+  // first, check the number of times the art has been sent
+  if (artworkUsage == 1) {
+    return await postInSlack({
+      channel: 'C14D3AQTT',
+      messageText: `Hey <@${artworkRecord.fields['Artist Slack ID']}>! The first package with your art on it just reached ${packageRecord.fields['Name']}`,
     })
+  }
+  return
+}
+
+export async function postInPackages(packageRecord, artworkRecord) {
+  return await postInSlack({
+    channel: 'C14D3AQTT',
+    messageText: `${packageRecord.fields['Name']} just received a SoM Envelope from HQ (with art by ${artworkRecord.fields['Artist Name']})`,
+    attachImageByUrl: packageRecord.fields['Recipient Uploads'][0]['url']
   })
 }
 
@@ -45,10 +92,14 @@ export default async (req, res) => {
   }
 
   // Set the record straight! (Upload the image to Airtable)
-  const record = setRecipientUpload(record_id, image_url)
+  const packageRecord = await setRecipientUpload(record_id, image_url)
+  const artworkRecord = await getArtwork(packageRecord.fields['Artwork'][0])
 
   // Make sure to post in the packages channel once done!
-  await postInPackages(record_id)
+  await postInPackages(packageRecord, artworkRecord)
 
-  res.send(record)
+  // notify the artist their work is out in the world!
+  await notifyArtist(packageRecord, artworkRecord)
+
+  res.send(packageRecord)
 }
