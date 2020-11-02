@@ -36,14 +36,16 @@ export default function HomePage(props) {
         sx={{ code: { marginTop: '20px', fontSize: 0 } }}
       >
         <Box sx={{}}>
-          <Card sx={{ marginTop: '20px'}}>
+          <Card sx={{ marginTop: '20px' }}>
             <div>
               <Heading as="h2" style={{ paddingBottom: '12px' }}>
                 Country list
               </Heading>
               <Text sx={{ maxHeight: '255px', overflowY: 'scroll' }}>
                 {props.data.map(country => (
-                  <Text style={{ paddingBottom: '5px' }}>{country.Country}</Text>
+                  <Text style={{ paddingBottom: '5px' }}>
+                    {country.Country}
+                  </Text>
                 ))}
               </Text>
             </div>
