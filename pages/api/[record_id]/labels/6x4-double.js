@@ -32,6 +32,9 @@ async function generateLabel(record) {
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
   doc.setLineWidth(0.01)
+  // uncomment while debugging:
+  // doc.rect(1.25,1.375,4,6)
+  // doc.rect(11-1.25-4,1.375,4,6)
 
   // outside label
   // stamp outline
