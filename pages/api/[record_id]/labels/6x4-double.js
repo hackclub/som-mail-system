@@ -36,8 +36,17 @@ async function generateLabel(record) {
   // outside label
   // stamp outline
   doc.setLineWidth(0.01)
-  doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
-  doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  if (record.fields['Country Dropdown'] == 'United States of America (US)') {
+    // outline for domestic First Class stamp
+    doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  } else {
+    // outline for Global Forever stamp
+    let rad = 0.5
+    let size = 0.6375
+    doc.ellipse(11-1.25-0.125-rad,1.375+0.125+rad, rad, rad)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.375-rad-size/2,1.375+rad/2,size,size)
+  }
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5)
   doc.setFontSize(8)
