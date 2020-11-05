@@ -32,12 +32,24 @@ async function generateLabel(record) {
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
   doc.setLineWidth(0.01)
+  // uncomment while debugging:
+  // doc.rect(1.25,1.375,4,6)
+  // doc.rect(11-1.25-4,1.375,4,6)
 
   // outside label
   // stamp outline
   doc.setLineWidth(0.01)
-  doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
-  doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  if (record.fields['Country Dropdown'] == 'United States of America (US)') {
+    // outline for domestic First Class stamp
+    doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+  } else {
+    // outline for Global Forever stamp
+    let rad = 0.5
+    let size = 0.6375
+    doc.ellipse(11-1.25-0.125-rad,1.375+0.125+rad, rad, rad)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.375-rad-size/2,1.375+rad/2,size,size)
+  }
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5)
   doc.setFontSize(8)
@@ -65,7 +77,7 @@ async function generateLabel(record) {
   doc.setFontSize(12)
   doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
   // dino image on outside
-  doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5)
+  doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5, 'artwork')
 
   // recipient sleeve
   doc.addImage(imgs.recipientQr, null, 1.25+0.125, 1.375+0.125, 0.5, 0.5)
@@ -78,6 +90,7 @@ async function generateLabel(record) {
   ].join("\n"), 1.25+0.125+0.5+0.1, 1.375+0.25)
   doc.setFontSize(20)
   doc.text("<-- scan this with your phone camera", 1.25+0.125, 0.75+1.375, null, -90)
+  doc.addImage(imgs.dino, null, 1.25+0.5, 0.75, 1.5, 1.5, 'artwork', null, -90)
 
   // label sheet border (not on one of the peel-able labels)
   doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1)
