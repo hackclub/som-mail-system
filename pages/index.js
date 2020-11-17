@@ -126,6 +126,7 @@ export async function getStaticProps() {
       data: finalData,
       totalAmount: massiveLength,
       shippedAmount: shipped.length
-    }
+    },
+    revalidate: 1
   }
 }
