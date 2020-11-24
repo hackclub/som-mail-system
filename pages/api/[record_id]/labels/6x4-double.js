@@ -107,10 +107,13 @@ async function generateLabel(record) {
 }
 
 export default async (req, res) => {
-  const { record_id } = req.query
+  const { record_id, secret } = req.query
+  if (secret != process.env.SECRET_TOKEN) {
+    return res.json({message: '🔒'}).status(403)
+  }
   const record = await getRecordById(record_id, true)
   if (!record) {
-    return res.status(404).end()
+    return res.json({message: '👁️'}).status(404)
   }
 
   const label = await generateLabel(record)
