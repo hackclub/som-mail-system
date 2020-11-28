@@ -30,6 +30,7 @@ async function generateLabel(record) {
     imageFromUrl("https://cloud-diytllbv8.vercel.app/0mail-team_1_.png").then(img =>
       imgs.mailTeam = img),
   ])
+  const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'Slack User SOM Stickers'
 
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
@@ -59,7 +60,7 @@ async function generateLabel(record) {
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
-    'Summer of Making Stickers',
+    missionScenario,
     record.id
   ].join("\n"), 11-1.375-4+0.25 + 0.5 + 0.125, 8.5-1.375-0.25)
   // return address
@@ -88,7 +89,7 @@ async function generateLabel(record) {
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
-    'Summer of Making Stickers',
+    missionScenario,
     record.id,
     record.fields['Comment']
   ].join("\n"), 1.25+0.125+0.5+0.1, 1.375+0.25)
@@ -103,7 +104,7 @@ async function generateLabel(record) {
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
-    'Summer of Making Stickers',
+    missionScenario,
     record.id,
     record.fields['Country Dropdown'],
     record.fields['Comment']
