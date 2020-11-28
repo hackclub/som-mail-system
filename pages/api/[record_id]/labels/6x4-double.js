@@ -65,7 +65,7 @@ async function generateLabel(record) {
     'Shelburne, VT 05482'
   ]
   if (record.fields['Country Dropdown'] != 'United States of America (US)') {
-    returnAddress.push('United States of America')
+    returnAddress.push(record.fields['Country Dropdown'])
   }
   doc.setFontSize(8)
   doc.text(returnAddress.join("\n"), 11-1.375-4+0.25 + 0.125, 1.375+0.25)
