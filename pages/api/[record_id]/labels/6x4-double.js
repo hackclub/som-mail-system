@@ -91,7 +91,7 @@ async function generateLabel(record) {
   doc.setFontSize(12)
   doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
   // dino image on outside
-  doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5, 'artwork')
+  // doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5, 'artwork')
 
   // recipient sleeve
   doc.addImage(imgs.recipientQr, null, 1.25+0.125, 1.375+0.125, 0.5, 0.5)
