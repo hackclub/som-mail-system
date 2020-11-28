@@ -77,9 +77,17 @@ async function generateLabel(record) {
   doc.text(returnAddress.join("\n"), 11-1.375-4+0.25 + 0.125, 1.375+0.25)
   // recipient address
   let recipientAddress = [
-    record.fields['Name'],
-    record.fields['Combined Address For Geocoding']
+    record.fields['Name']
   ]
+  recipientAddress.push(record.fields['Street (First Line)'])
+  if (record.fields['Street (Second Line)']) {
+    recipientAddress.push(record.fields['Street (Second Line)'])
+  }
+  recipientAddress.push(`${record.fields['City']}, ${record.fields['State / Province']} ${record.fields['Postal Code']}`)
+  if (record.fields['Country Dropdown'] != 'United States of America (US)') {
+    recipientAddress.push(`${record.fields['Country Dropdown']}`)
+  }
+
   doc.setFontSize(12)
   doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
   // dino image on outside
