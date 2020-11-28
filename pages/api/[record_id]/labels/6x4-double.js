@@ -65,6 +65,7 @@ async function generateLabel(record) {
   ].join("\n"), 11-1.375-4+0.25 + 0.5 + 0.125, 8.5-1.375-0.25)
   // return address
   let returnAddress = [
+    'Max Wofford (@msw)',
     'Hack Club',
     '15 Falls Road',
     'Shelburne, VT 05482'
