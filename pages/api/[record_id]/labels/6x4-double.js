@@ -91,6 +91,8 @@ async function generateLabel(record) {
   doc.setFontSize(20)
   doc.text("<-- scan this with your phone camera", 1.25+0.125, 0.75+1.375, null, -90)
   doc.addImage(imgs.dino, null, 1.25+0.5, 0.75, 1.5, 1.5, 'artwork', null, -90)
+  doc.setFontSize(8)
+  doc.text(`^ artwork by ${record.fields['Artist Name']}`, 1.75, 3, null, -90)
 
   // label sheet border (not on one of the peel-able labels)
   doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1)
