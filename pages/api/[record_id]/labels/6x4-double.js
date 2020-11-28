@@ -56,7 +56,7 @@ async function generateLabel(record) {
   // mailteam logo
   doc.addImage(imgs.mailTeam, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125-0.75, 1, 1)
   // outside qr code
-  doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5)
+  doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
@@ -100,7 +100,7 @@ async function generateLabel(record) {
   doc.text(`^ artwork by ${record.fields['Artist Name']}`, 1.75, 3, null, -90)
 
   // label sheet border (not on one of the peel-able labels)
-  doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1)
+  doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1, 'nodemaster')
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
