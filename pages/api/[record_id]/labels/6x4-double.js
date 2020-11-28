@@ -27,10 +27,14 @@ async function generateLabel(record) {
       imgs.recipientQr = img),
     imageFromUrl(record.fields['Node Master QR Code']).then(img =>
       imgs.nodeMasterQr = img),
-    imageFromUrl("https://cloud-diytllbv8.vercel.app/0mail-team_1_.png").then(img =>
+    imageFromUrl("https://cloud-n2m45q6mq.vercel.app/00mail-team_1__2_.png").then(img =>
       imgs.mailTeam = img),
+    imageFromUrl("https://cloud-5tyv1kfqa.vercel.app/0coat-of-arms_1_.png").then(img =>
+      imgs.coatOfArms = img),
+    imageFromUrl("https://cloud-j7721w09u.vercel.app/0thank-you_1_.png").then(img =>
+      imgs.thankYou = img),
   ])
-  const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'Slack User SOM Stickers'
+  const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'Slack SOM Stickers'
 
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
@@ -54,7 +58,9 @@ async function generateLabel(record) {
     doc.addImage(imgs.stampPlaceholder, null, 11-1.375-rad-size/2,1.375+rad/2,size,size)
   }
   // mailteam logo
-  doc.addImage(imgs.mailTeam, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125-0.75, 1, 1)
+  doc.addImage(imgs.mailTeam, null, 11-1.375-2, 8.5-1.375-0.25-0.125-0.75-0.5, 2, 2)
+  doc.setFontSize(14)
+  doc.text('Summer of Making Stickers', 11-1.375-3, 8.5-2.5)
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
   doc.setFontSize(8)
@@ -63,6 +69,8 @@ async function generateLabel(record) {
     missionScenario,
     record.id
   ].join("\n"), 11-1.375-4+0.25 + 0.5 + 0.125, 8.5-1.375-0.25)
+  // return address coat of arms
+  doc.addImage(imgs.coatOfArms, null, 11-1.375-4+1.5, 1.375+0.125, 0.75, 0.75, 'coatofarms')
   // return address
   let returnAddress = [
     'Max Wofford (@msw)',
@@ -107,6 +115,9 @@ async function generateLabel(record) {
   doc.addImage(imgs.dino, null, 1.25+0.5, 0.75, 1.5, 1.5, 'artwork', null, -90)
   doc.setFontSize(8)
   doc.text(`^ artwork by ${record.fields['Artist Name']}`, 1.75, 3, null, -90)
+  if (record.fields['Suspected Slack User'] == 'false') {
+    doc.addImage(imgs.thankYou, null, 1.25+0.5, 0.75+2.5, 1.5, 1.5, 'thankyou', null, -90)
+  }
 
   // label sheet border (not on one of the peel-able labels)
   doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1, 'nodemaster')
