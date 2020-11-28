@@ -27,6 +27,8 @@ async function generateLabel(record) {
       imgs.recipientQr = img),
     imageFromUrl(record.fields['Node Master QR Code']).then(img =>
       imgs.nodeMasterQr = img),
+    imageFromUrl("https://cloud-diytllbv8.vercel.app/0mail-team_1_.png").then(img =>
+      imgs.mailTeam = img),
   ])
 
   // border for the 2 sides
@@ -50,6 +52,8 @@ async function generateLabel(record) {
     doc.ellipse(11-1.25-0.125-rad,1.375+0.125+rad, rad, rad)
     doc.addImage(imgs.stampPlaceholder, null, 11-1.375-rad-size/2,1.375+rad/2,size,size)
   }
+  // mailteam logo
+  doc.addImage(imgs.mailTeam, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125-0.75, 1, 1)
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5)
   doc.setFontSize(8)
