@@ -91,13 +91,10 @@ function RecipientScanPage(props) {
       >
         Thank you for making with us this summer!{' '}
       </Heading>
-      <p>
-        As a small token of appreciation, we've sent you a couple of stickers!
-      </p>
       {typeof props.record.fields['Recipient Uploads'] == 'undefined' ?
       <>
       <p>
-        If you want, take a photo of your package to share! Make sure to cover all private details first!
+        Please take a picture to confirm you've recieved your package. Make sure to cover your private details– this will be posted in an open Slack channel.
       </p>
       <Button id="input-file-label-button" sx={{
         backgroundColor: buttonColor
@@ -115,7 +112,8 @@ function RecipientScanPage(props) {
         style={{ display: 'none' }}
         onChange={e => uploadPhotos(e, props.record.id)}
       />
-      </> : <p></p>}
+      </> :
+      <p>Thank you for uploading that picture! We got it.</p>}
     </Container>
   )
 }
