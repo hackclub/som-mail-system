@@ -34,7 +34,7 @@ async function generateLabel(record) {
     imageFromUrl("https://cloud-j7721w09u.vercel.app/0thank-you_1_.png").then(img =>
       imgs.thankYou = img),
   ])
-  const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'Slack SOM Stickers'
+  const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'VIP Summer of Making Stickers'
 
   // border for the 2 sides
   // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
