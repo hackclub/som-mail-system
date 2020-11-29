@@ -96,7 +96,7 @@ export default async (req, res) => {
   const artworkRecord = await getArtwork(packageRecord.fields['Artwork'][0])
 
   await Promise.all([
-    postInPackages(packageRecord, artworkRecord), // Make sure to post in the packages channel once done!
+    // postInPackages(packageRecord, artworkRecord), // Make sure to post in the packages channel once done!
     notifyArtist(packageRecord, artworkRecord), // notify the artist their work is out in the world!
   ])
 
