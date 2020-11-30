@@ -27,11 +27,11 @@ async function generateLabel(record) {
       imgs.recipientQr = img),
     imageFromUrl(record.fields['Node Master QR Code']).then(img =>
       imgs.nodeMasterQr = img),
-    imageFromUrl("https://cloud-n2m45q6mq.vercel.app/00mail-team_1__2_.png").then(img =>
+    imageFromUrl("https://cloud-kjy0691u4.vercel.app/0mail-team.jpg").then(img =>
       imgs.mailTeam = img),
-    imageFromUrl("https://cloud-5tyv1kfqa.vercel.app/0coat-of-arms_1_.png").then(img =>
+    imageFromUrl("https://cloud-kjy0691u4.vercel.app/1coat-of-arms.jpg").then(img =>
       imgs.coatOfArms = img),
-    imageFromUrl("https://cloud-j7721w09u.vercel.app/0thank-you_1_.png").then(img =>
+    imageFromUrl("https://cloud-kjy0691u4.vercel.app/2thank-you.jpg").then(img =>
       imgs.thankYou = img),
   ])
   const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'VIP Summer of Making Stickers'
