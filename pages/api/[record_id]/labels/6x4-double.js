@@ -76,7 +76,7 @@ async function generateLabel(record) {
   // return address
   let returnAddress = [
     'Max Wofford (@msw)',
-    'Hack Club',
+    'Hack Club HQ',
     '15 Falls Road',
     'Shelburne, VT 05482'
   ]
