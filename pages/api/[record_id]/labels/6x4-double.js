@@ -23,6 +23,8 @@ async function generateLabel(record) {
       imgs.dino = img),
     imageFromUrl('https://cloud-ncs8fqr6s.vercel.app/0pixil-frame-0.png').then(img =>
       imgs.stampPlaceholder = img),
+    imageFromUrl(record.fields['Record QR Code']).then(img =>
+      imgs.recordQr = img),
     imageFromUrl(record.fields['Recipient QR Code']).then(img =>
       imgs.recipientQr = img),
     imageFromUrl(record.fields['Node Master QR Code']).then(img =>
@@ -120,7 +122,7 @@ async function generateLabel(record) {
   }
 
   // label sheet border (not on one of the peel-able labels)
-  doc.addImage(imgs.nodeMasterQr, null, 11-1.1, 0.1, 1, 1, 'nodemaster')
+  doc.addImage(imgs.recordQr, null, 11-1.1, 0.1, 1, 1, 'recordqr')
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
