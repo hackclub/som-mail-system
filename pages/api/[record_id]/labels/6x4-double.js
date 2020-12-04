@@ -125,12 +125,13 @@ async function generateLabel(record) {
     record.fields['Comment']
   ].join("\n"), 11-0.25, 1+0.25, null, -90)
 
-  // border for the 2 sides
-  // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
-  doc.setLineWidth(0.01)
-  // uncomment while debugging:
-  doc.rect(1.25,1.375,4,6)
-  doc.rect(11-1.25-4,1.375,4,6)
+  if (process.env.NODE_ENV === 'development') {
+    // border for the 2 sides
+    // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
+    doc.setLineWidth(0.01)
+    doc.rect(1.25,1.375,4,6)
+    doc.rect(11-1.25-4,1.375,4,6)
+  }
 
   return doc.output()
 }
