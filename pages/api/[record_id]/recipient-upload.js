@@ -92,7 +92,7 @@ async function notifyArtist(packageRecord, artworkRecord) {
 export async function postInPackages(packageRecord, artworkRecord) {
   return await postInSlack({
     channel: 'C14D3AQTT',
-    messageText: `${packageRecord.fields['Name']} just received a :summer-of-making: SoM Envelope from HQ (with art by ${artworkRecord.fields['Artist Name']})`,
+    messageText: `${packageRecord.fields['Name']} (in ${packageRecord.fields['Country Dropdown']}) just received a :summer-of-making: SoM Envelope from HQ (with art by ${artworkRecord.fields['Artist Name']})`,
     attachImageByUrl: packageRecord.fields['Recipient Uploads'][0]['url']
   })
 }
