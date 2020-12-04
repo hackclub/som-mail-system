@@ -38,41 +38,34 @@ async function generateLabel(record) {
   ])
   const missionScenario = record.fields['Suspected Slack User'] == 'false' ? 'Summer of Making Stickers' : 'VIP Summer of Making Stickers'
 
-  // border for the 2 sides
-  // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
-  doc.setLineWidth(0.01)
-  // uncomment while debugging:
-  // doc.rect(1.25,1.375,4,6)
-  // doc.rect(11-1.25-4,1.375,4,6)
-
   // outside label
   // stamp outline
   doc.setLineWidth(0.01)
   if (record.fields['Country Dropdown'] == 'United States of America (US)') {
     // outline for domestic First Class stamp
     doc.rect(11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
-    doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.25-0.5-0.125,1.375+0.125,0.6375,0.6375, null, null, 90)
   } else {
     // outline for Global Forever stamp
     let rad = 0.5
     let size = 0.6375
-    doc.ellipse(11-1.25-0.125-rad,1.375+0.125+rad, rad, rad)
-    doc.addImage(imgs.stampPlaceholder, null, 11-1.375-rad-size/2,1.375+rad/2,size,size)
+    doc.ellipse(11-1.25-4+0.125+rad,1.375+0.125+rad, rad, rad)
+    doc.addImage(imgs.stampPlaceholder, null, 11-1.375-4+rad+size-0.125,1.375+rad/2,size,size, null, null, 90)
   }
-  // mailteam logo
-  doc.addImage(imgs.mailTeam, null, 11-1.375-2, 8.5-1.375-0.25-0.125-0.75-0.5, 2, 2)
+  // // mailteam logo
+  doc.addImage(imgs.mailTeam, null, 11-0.75-0.125, 1.5, 2, 2, null, null, 90)
   doc.setFontSize(14)
-  doc.text('Summer of Making Stickers', 11-1.375-3, 8.5-2.5)
+  doc.text('Summer of Making Stickers', 11-2.5, 4, null, 90)
   // outside qr code
-  doc.addImage(imgs.nodeMasterQr, null, 11-1.375-4+0.25, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
+  doc.addImage(imgs.nodeMasterQr, null, 11-1.375-0.5, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
   doc.setFontSize(8)
   doc.text([
     record.fields['Name'],
     missionScenario,
     record.id
-  ].join("\n"), 11-1.375-4+0.25 + 0.5 + 0.125, 8.5-1.375-0.25)
+  ].join("\n"), 11-1.75 , 8.5-1.75-0.125, null, 90)
   // return address coat of arms
-  doc.addImage(imgs.coatOfArms, null, 11-1.375-4+1.5, 1.375+0.125, 0.75, 0.75, 'coatofarms')
+  doc.addImage(imgs.coatOfArms, null, 11-4-0.375, 8-1.375-0.125, 0.75, 0.75, 'coatofarms', null, 90)
   // return address
   let returnAddress = [
     'Max Wofford (@msw)',
@@ -84,7 +77,7 @@ async function generateLabel(record) {
     returnAddress.push("United States of America")
   }
   doc.setFontSize(8)
-  doc.text(returnAddress.join("\n"), 11-1.375-4+0.25 + 0.125, 1.375+0.25)
+  doc.text(returnAddress.join("\n"), 11-1.375-4+0.25 + 0.125, 8-1.5, null, 90)
   // recipient address
   let recipientAddress = [
     record.fields['Name']
@@ -97,9 +90,9 @@ async function generateLabel(record) {
   if (record.fields['Country Dropdown'] != 'United States of America (US)') {
     recipientAddress.push(`${record.fields['Country Dropdown']}`)
   }
-
   doc.setFontSize(12)
-  doc.text(recipientAddress.join("\n"), 11-1.375-4+1.25, 1.375+3)
+  doc.text(recipientAddress.join("\n"), 11-1-4+1.25, 8-1.25-1, null, 90)
+
   // dino image on outside
   // doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5, 'artwork')
 
@@ -131,6 +124,13 @@ async function generateLabel(record) {
     record.fields['Country Dropdown'],
     record.fields['Comment']
   ].join("\n"), 11-0.25, 1+0.25, null, -90)
+
+  // border for the 2 sides
+  // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#rect
+  doc.setLineWidth(0.01)
+  // uncomment while debugging:
+  doc.rect(1.25,1.375,4,6)
+  doc.rect(11-1.25-4,1.375,4,6)
 
   return doc.output()
 }
