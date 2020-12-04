@@ -83,7 +83,7 @@ async function notifyArtist(packageRecord, artworkRecord) {
   if (artworkUsage == 1) {
     return await postInSlack({
       channel: 'C14D3AQTT',
-      messageText: `Hey <@${artworkRecord.fields['Artist Slack ID']}>! The first package with your art on it just reached ${packageRecord.fields['Name']}`,
+      messageText: `Hey <@${artworkRecord.fields['Artist Slack ID']}>! The first package with your piece _${artworkRecord.fields['Name']}_ on it just reached ${packageRecord.fields['Name']}`,
     })
   }
   return
