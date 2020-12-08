@@ -36,6 +36,9 @@ function RecipientScanPage(props) {
       <p>You've just scanned the package for {props.record.fields['Name']}! Go ahead and ship it out once you're ready. </p>
       <p>🙌 Thank you for being awesome!</p>
       <p></p>
+      <a href={`https://airtable.com/tblQvjwEmOnM7EpuE/viwN28m3pRtwX34ZH/${props.record.id}?blocks=hide`}>
+        <img src="https://cloud-hof0r8arn.vercel.app/0airtable-seeklogo.com.svg" />
+      </a>
       
     </Container>
   )
