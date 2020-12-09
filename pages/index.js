@@ -50,7 +50,7 @@ export default function HomePage(props) {
             <Grid columns={'1fr 9fr'} gap={0}>
               <div>
                 <Heading as="h1" style={{ paddingRight: '8px' }}>
-                  {props.totalAmount}
+                  {props.totalAmount - props.shippedAmount}
                 </Heading>
               </div>
               <div style={{ paddingTop: '5px' }}>
