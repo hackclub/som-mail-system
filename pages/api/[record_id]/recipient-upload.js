@@ -22,7 +22,19 @@ async function postInSlack({channel, messageText, attachImageByUrl, thread}) {
   })
 }
 
-export async function setRecipientUpload(record_id, image_url) {
+async function imgToCDN(url) {
+  const upload = await fetch('https://cdn.hackclub.com/api/v1/new', {
+    method: 'POST',
+    body: JSON.stringify([url])
+  }).then(d => d.json())
+  .catch(err => {
+    console.error(err)
+  })
+  return upload[0]
+}
+
+export async function setRecipientUpload(record_id, tmp_image_url) {
+  const cdn_url = await imgToCDN(tmp_image_url)
   const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
   const rawRecords = await fetch(endpoint, {
     method: 'PATCH',
@@ -34,7 +46,7 @@ export async function setRecipientUpload(record_id, image_url) {
       fields: {
         'Recipient Uploads': [
           {
-            url: image_url
+            url: cdn_url
           }
         ]
       }
@@ -71,7 +83,7 @@ async function notifyArtist(packageRecord, artworkRecord) {
   if (artworkUsage == 1) {
     return await postInSlack({
       channel: 'C14D3AQTT',
-      messageText: `Hey <@${artworkRecord.fields['Artist Slack ID']}>! The first package with your art on it just reached ${packageRecord.fields['Name']}`,
+      messageText: `Hey <@${artworkRecord.fields['Artist Slack ID']}>! The first package with your piece _${artworkRecord.fields['Name']}_ on it just reached ${packageRecord.fields['Name']}`,
     })
   }
   return
@@ -80,7 +92,7 @@ async function notifyArtist(packageRecord, artworkRecord) {
 export async function postInPackages(packageRecord, artworkRecord) {
   return await postInSlack({
     channel: 'C14D3AQTT',
-    messageText: `${packageRecord.fields['Name']} just received a SoM Envelope from HQ (with art by ${artworkRecord.fields['Artist Name']})`,
+    messageText: `${packageRecord.fields['Name']} (in ${packageRecord.fields['Country Dropdown']}) just received a :summer-of-making: SoM Envelope from HQ (with art by ${artworkRecord.fields['Artist Name']})`,
     attachImageByUrl: packageRecord.fields['Recipient Uploads'][0]['url']
   })
 }
