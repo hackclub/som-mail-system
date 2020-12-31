@@ -1,6 +1,7 @@
 {
   "name": "som-mail-system",
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "build": "next build",
