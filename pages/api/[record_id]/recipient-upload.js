@@ -47,7 +47,8 @@ export async function setRecipientUpload(record_id, tmp_image_url) {
         'Recipient Uploads': [
           {
             url: cdn_url
-          }
+          },
+        'Uploaded Image URL (CDN)': cdn_url
         ]
       }
     })
