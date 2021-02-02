@@ -1,4 +1,4 @@
-export async function getRecordById(record_id, withAuth=false) {
+export async function getRecordById(record_id, withAuth=true) {
   const options = {
     maxRecords: 1,
     filterByFormula: `RECORD_ID()='${record_id}'`
