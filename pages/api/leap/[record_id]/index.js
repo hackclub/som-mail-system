@@ -3,7 +3,7 @@ export async function getRecordById(record_id, withAuth=false) {
     maxRecords: 1,
     filterByFormula: `RECORD_ID()='${record_id}'`
   }
-  let baseUrl = 'https://api2.hackclub.com/v0.1/SOM Sticker Requests/Sticker Requests'
+  let baseUrl = 'https://api2.hackclub.com/v0.1/SOM Sticker Requests/Leaps in India'
   let endpoint = `${baseUrl}?select=${JSON.stringify(options)}`
   if (withAuth) {
     endpoint += `&authKey=${process.env.AIRBRIDGE_TOKEN}`
