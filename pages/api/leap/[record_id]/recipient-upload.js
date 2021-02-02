@@ -35,7 +35,7 @@ async function postInSlack({channel, messageText, attachImageByUrl, thread}) {
   
   export async function setRecipientUpload(record_id, tmp_image_url) {
     const cdn_url = await imgToCDN(tmp_image_url)
-    const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Sticker%20Requests?authKey=${process.env.AIRBRIDGE_TOKEN}`
+    const endpoint = `https://api2.hackclub.com/v0.1/SOM%20Sticker%20Requests/Leaps in India?authKey=${process.env.AIRBRIDGE_TOKEN}`
     const rawRecords = await fetch(endpoint, {
       method: 'PATCH',
       headers: {
