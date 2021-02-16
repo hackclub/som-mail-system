@@ -104,7 +104,7 @@ async function generateLabel(record) {
   if (record.fields['Street (Second Line)']) {
     recipientAddress.push(record.fields['Street (Second Line)'])
   }
-  recipientAddress.push(`${record.fields['City']}, ${record.fields['State / Province']} ${record.fields['Postal Code']}`)
+  recipientAddress.push(`${record.fields['City']}, ${record.fields['State / Province'] || ''} ${record.fields['Postal Code']}`)
   if (record.fields['Country Dropdown'] != 'United States of America (US)') {
     recipientAddress.push(`${record.fields['Country Dropdown']}`)
   }
