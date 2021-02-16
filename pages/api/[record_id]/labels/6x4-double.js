@@ -69,8 +69,8 @@ async function generateLabel(record) {
   // // mailteam logo
   doc.addImage(imgs.mailTeam, null, 11-0.75-0.125, 1.5, 2, 2, null, null, 90)
   doc.setFontSize(14)
-  doc.setFont('Flames')
-  doc.text('Summer of Making Stickers', 11-2.5, 4, null, 90)
+  doc.setFont('AbstractGroovy')
+  doc.text('Summer of Making Stickers', 11-2.375, 4.75, null, 90)
   doc.setFont('Helvetica') // reset font
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-0.5, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
