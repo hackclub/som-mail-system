@@ -15,7 +15,6 @@ async function loadFont(doc, name) {
   const res = await fetch(url)
   const blob = await res.blob()
   const buff = new Buffer(await blob.arrayBuffer())
-  // const data = 'data:' + res.headers.get('content-type') + ';binary,' + buff.toString('binary')
   const data = buff.toString('binary')
   doc.addFileToVFS(`${name}.ttf`, data)
   doc.addFont(`${name}.ttf`, name, 'normal')
