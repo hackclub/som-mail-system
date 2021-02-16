@@ -10,6 +10,17 @@ async function imageFromUrl(url) {
   return 'data:' + res.headers.get('content-type') + ';base64,' + buff.toString('base64')
 }
 
+async function loadFont(doc, name) {
+  const url = `http://localhost:3001/${name}/${name}.ttf`
+  const res = await fetch(url)
+  const blob = await res.blob()
+  const buff = new Buffer(await blob.arrayBuffer())
+  // const data = 'data:' + res.headers.get('content-type') + ';binary,' + buff.toString('binary')
+  const data = buff.toString('binary')
+  doc.addFileToVFS(`${name}.ttf`, data)
+  doc.addFont(`${name}.ttf`, name, 'normal')
+}
+
 async function generateLabel(record) {
   const doc = new jsPDF({
     orientation: "landscape",
@@ -19,6 +30,10 @@ async function generateLabel(record) {
 
   const imgs = {}
   await Promise.all([
+    loadFont(doc, 'Pacifico'),
+    loadFont(doc, 'Flames'),
+    loadFont(doc, 'AbstractGroovy'),
+    loadFont(doc, 'Arial'),
     imageFromUrl(record.fields['URL (from Artwork)']).then(img =>
       imgs.dino = img),
     imageFromUrl('https://cloud-ncs8fqr6s.vercel.app/0pixil-frame-0.png').then(img =>
@@ -55,15 +70,19 @@ async function generateLabel(record) {
   // // mailteam logo
   doc.addImage(imgs.mailTeam, null, 11-0.75-0.125, 1.5, 2, 2, null, null, 90)
   doc.setFontSize(14)
+  doc.setFont('Flames')
   doc.text('Summer of Making Stickers', 11-2.5, 4, null, 90)
+  doc.setFont('Helvetica') // reset font
   // outside qr code
   doc.addImage(imgs.nodeMasterQr, null, 11-1.375-0.5, 8.5-1.375-0.25-0.125, 0.5, 0.5, 'nodemaster')
   doc.setFontSize(8)
+  doc.setFont('Arial')
   doc.text([
     record.fields['Name'],
     missionScenario,
     record.id
   ].join("\n"), 11-1.75 , 8.5-1.75-0.125, null, 90)
+  doc.setFont('Helvetica') // reset font
   // return address coat of arms
   doc.addImage(imgs.coatOfArms, null, 11-4-0.375, 8-1.375-0.125, 0.75, 0.75, 'coatofarms', null, 90)
   // return address
@@ -91,7 +110,9 @@ async function generateLabel(record) {
     recipientAddress.push(`${record.fields['Country Dropdown']}`)
   }
   doc.setFontSize(12)
+  doc.setFont('Arial')
   doc.text(recipientAddress.join("\n"), 11-1-4+1.25, 8-1.25-1, null, 90)
+  doc.setFont('Helvetica') // reset font
 
   // dino image on outside
   // doc.addImage(imgs.dino, null, 11-1.25-4+0.25, 1.375+1, 1.5, 1.5, 'artwork')
@@ -99,17 +120,19 @@ async function generateLabel(record) {
   // recipient sleeve
   doc.addImage(imgs.recipientQr, null, 1.25+0.125, 1.375+0.125, 0.5, 0.5)
   doc.setFontSize(8)
+  doc.setFont('Arial')
   doc.text([
     record.fields['Name'],
     missionScenario,
     record.id,
     record.fields['Comment']
   ].join("\n"), 1.25+0.125+0.5+0.1, 1.375+0.25)
+  doc.setFont('Helvetica') // reset font
   doc.setFontSize(20)
   doc.text("<-- scan this with your phone camera", 1.25+0.125, 0.75+1.375, null, -90)
   doc.addImage(imgs.dino, null, 1.25+0.5, 0.75, 1.5, 1.5, 'artwork', null, -90)
   doc.setFontSize(8)
-  doc.text(`^ artwork by ${record.fields['Artist Name']}`, 1.75, 3, null, -90)
+  doc.text(`^ artwork by ${record.fields['Artist Name']}`, 1.6375, 3, null, -90)
   if (record.fields['Suspected Slack User'] == 'false') {
     doc.addImage(imgs.thankYou, null, 1.25+0.5, 0.75+2.5, 1.5, 1.5, 'thankyou', null, -90)
   }
@@ -117,6 +140,7 @@ async function generateLabel(record) {
   // label sheet border (not on one of the peel-able labels)
   doc.addImage(imgs.recordQr, null, 11-1.1, 0.1, 1, 1, 'recordqr')
   doc.setFontSize(8)
+  doc.setFont('Arial')
   doc.text([
     record.fields['Name'],
     missionScenario,
@@ -124,6 +148,7 @@ async function generateLabel(record) {
     record.fields['Country Dropdown'],
     record.fields['Comment']
   ].join("\n"), 11-0.25, 1+0.25, null, -90)
+  doc.setFont('Helvetica') // reset font
 
   if (process.env.NODE_ENV === 'development') {
     // border for the 2 sides
