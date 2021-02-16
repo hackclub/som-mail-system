@@ -11,7 +11,7 @@ async function imageFromUrl(url) {
 }
 
 async function loadFont(doc, name) {
-  const url = `http://localhost:3001/${name}/${name}.ttf`
+  const url = `https://som-mail-system.hackclub.com/${name}/${name}.ttf`
   const res = await fetch(url)
   const blob = await res.blob()
   const buff = new Buffer(await blob.arrayBuffer())
