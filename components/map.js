@@ -13,7 +13,7 @@ var myRainbow = new Rainbow()
 myRainbow.setSpectrum('#ff8c37', '#ec3750')
 
 const geoUrl =
-  'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json'
+  'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/a0004e4ad0a15644c0ce466c8edf1d69279935ca/topojson-maps/world-110m.json'
 
 const colorScale = scaleLinear()
   .domain([0.29, 0.68])
