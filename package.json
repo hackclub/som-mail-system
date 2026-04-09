@@ -16,7 +16,7 @@
     "d3-scale": "^3.2.3",
     "i18n-iso-countries": "^6.2.2",
     "jspdf": "^2.1.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.18.1",
     "next": "^10.0.1",
     "rainbowvis.js": "^1.0.1",
     "react": "^16.13.1",
